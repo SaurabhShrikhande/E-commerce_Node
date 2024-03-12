@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const router = require("./router/user.js");
+const userRouter = require("./router/user.js");
+const productRoutes = require("./router/product.js")
 
 mongoose.connect("mongodb://localhost:27017/ecom")
 .then(() => { console.log("db connected")})
@@ -11,7 +12,9 @@ const app = express();
 
 
 app.use(express.json());
-app.use("/api/v1/user", router);
+app.use("/api/v1/user", userRouter);
+
+app.use("/api/v1/product" , productRoutes)
 
 app.get("/test" ,(req,res) => {
     

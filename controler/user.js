@@ -46,7 +46,7 @@ const userlogin = async (req,res) => {
 const user = await usermodel.findOne({email : req.body.email})
 
 if (!user){
-  res.json({
+ return res.json({
     sucess : false,
     massage : "Invalid userName or Password1"
   })
@@ -55,7 +55,7 @@ if (!user){
 const passmatch =  bcrypt.compareSync(req.body.password, user.password)
 
    if (!passmatch){
-    res.json({
+    return res.json({
       sucess : false,
       massage : "Invalid userName or Password2"
     })

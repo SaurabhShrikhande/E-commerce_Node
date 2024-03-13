@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
-
+const userModel = require("../model/user")
 // function authMiddleware (role) {
 //     return function
 // }
 
 
-const authMiddleware = (role) => (req, res,next) => {
+const authMiddleware = (role) => async (req, res,next) => {
     try {
 
         // const token = req.headers.authorization.split(" ")[1];
@@ -14,6 +14,10 @@ const authMiddleware = (role) => (req, res,next) => {
         const payload =  jwt.decode(req.headers.authorization);
         
         if(role.includes(payload.role)){     // and check with db for prevent multiple login // at the time of login latest tocken in db
+           // req.userId = payload.id   //myshortcut  
+         
+           req.user = await userModel.findById(payload.id);
+           console.log("req.user" , req.user)
             next();
         }
         else{

@@ -48,7 +48,63 @@ const getProduct = (req,res) => {
 }
 
 
+const editProduct = (req, res) => {
+   
+  res.json({
+    sucess : true,
+    massage : "Edit product sussesfully"
+  })
+}
+
+const likeDislike = async (req, res) => {   
+ // console.log("req.body", req.body)
+ // console.log("req.param.action", req.params.action)   //not param its params  // s imp 
+ console.log("req.param.action", req.user.id)
+  if (req.params.action === "like"){
+                                                                                // important push insted of set   
+                                                                                                      //req.body.id from other option req.user.id from auth)  
+    const UpdatedProduct  = await productModel.findByIdAndUpdate(req.params.productId , {$push : {like : req.user.id}, $pull : { dislike : req.user.id} })
+   //  console.log(UpdatedProduct)                               //req,params.productId endpoint  /:productId/:action
+  }
+
+  if (req.params.action === "dislike"){
+    // important push insted of set     
+     const UpdatedProduct  = await productModel.findByIdAndUpdate(req.params.productId , {$push : { dislike : req.user.id}, $pull : { like : req.user.id} })
+        console.log(UpdatedProduct)
+}     
+
+if (req.params.action === "nutral"){
+  // important push insted of set     
+   const UpdatedProduct  = await productModel.findByIdAndUpdate(req.params.productId , {$pull : { like : req.user.id , dislike : req.user.id} })
+      console.log(UpdatedProduct)
+}     
+
+  res.json({
+    sucess : true,
+    massage : "Like Dislike product sussesfully"
+  })
+}
+
+const productDetail = async (req,res) => {
+
+const productDetail = await productModel.findById(req.body.productId)
+.populate("like")
+.populate("dislike")
+
+  res.json({
+    sucess : true,
+    massage : "Product Detail API sucessfully",
+    result : productDetail
+  })
+}
+
+
 module.exports = {
     createProduct,
-    getProduct
+    getProduct,
+    editProduct,
+
+    likeDislike,
+    productDetail
+
 };

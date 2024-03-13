@@ -29,6 +29,16 @@ const productSchema = new mongoose.Schema({
         type : String,
         require : true
     },
+    like : {
+        type : [mongoose.Schema.Types.ObjectId],
+        default : [],
+        ref : "users"
+    },
+    dislike : {
+        type : [mongoose.Schema.Types.ObjectId],
+        default : [],
+        ref : "users"
+    }
 })
 
 

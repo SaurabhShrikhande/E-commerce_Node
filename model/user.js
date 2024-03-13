@@ -56,9 +56,9 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre("save" , function () {
     const salt = bcrypt.genSaltSync(10);
-    console.log(salt)
+   // console.log(salt)
     const hash = bcrypt.hashSync( this.password , salt);
-    console.log(hash)
+  //  console.log(hash)
     this.password = hash;
 })
 const UserModel = mongoose.model("users" , userSchema);

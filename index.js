@@ -2,10 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./router/user.js");
 const productRoutes = require("./router/product.js")
-
-mongoose.connect("mongodb://localhost:27017/ecom")
+                   //mongodb://localhost:27017   
+mongoose.connect("mongodb://127.0.0.1:27017/ecom")
 .then(() => { console.log("db connected")})
-.catch((err)=> { console.log(err)} );
+.catch((err)=> { console.log(err.message)} );
 
 const app = express();
 

@@ -59,6 +59,7 @@ const passmatch =  bcrypt.compareSync(req.body.password, user.password)
   }
 else{
   const payload = {
+    id : user._id,
     name : user.firstname,
     role : user.role,   //many thing u can put 
     exp : Math.floor((new Date().getTime() / 1000) + 3600),          //epoc converter google(time coverter) 

@@ -102,31 +102,73 @@ const productDetail = await productModel.findById(req.body.productId)
 }
 
  const  reviews = async (req, res) => {
- /*
-    productId : from URL params 
-    Rating and comment : body,
-    userId : Auth
- */
-
-   // console.log("req.params.productId , req.body , req.user.id ", req.params.productId , req.body , req.user.id )
-
-   const review = await productModel.findByIdAndUpdate(req.params.productId ,
-    { $push : { reviews : {      
-       rating : req.body.rating,
-       comment : req.body.comment,
-       userId : req.user.Id
-    } } },
-    {              //mongoose updated without true but|>
-      new : true,  //just  required for console new data
-    }  
-    )
-
-    console.log(review);
-  res.json({
-    sucess : true,
-    massage : "Review updated and saved . // API sucessfully",
+  try{
+    /*
+       productId : from URL params 
+       Rating and comment : body,
+       userId : Auth
+    */
    
-  })
+      // console.log("req.params.productId , req.body , req.user.id ", req.params.productId , req.body , req.user.id )
+   
+      const product = await productModel.findById(req.params.productId);
+     // console.log(product.reviews);
+   
+      //sir said,  include run on normal array
+      // it array of object here used find method by sir
+       //normal javascript 
+   
+       const reviewAvl = product.reviews.find((reviewavl) => reviewavl.userId.toString() === req.user.id.toString() )
+   
+      // console.log("avl", avl);
+   
+       if (reviewAvl){
+         // learn how to update subdocument
+           console.log("Exist")
+         
+           const findobj =  {
+             reviews : {
+               $elemMatch : {
+                  userId : req.user.id
+                }
+               }
+             }
+   
+           const updateObj = {
+              $set : {
+                   "reviews.$.rating" : req.body.rating,
+                   "reviews.$.comment" : req.body.comment
+              } 
+           }
+         //  await productModel.findByIdAndUpdate(req.params.productId, updateObj)  //  Xwrong //focus here
+          //  await productModel.findOneAndUpdate(findobj , updateObj);
+        //  await productModel.findOne(findobj , updateObj);
+         const res =  await productModel.updateOne(findobj , updateObj);
+          //  console.log(res) //match count update count
+        }
+        else{
+         const review = await productModel.findByIdAndUpdate(req.params.productId ,
+          { $push : { reviews : {      
+             rating : req.body.rating,
+             comment : req.body.comment,
+             userId : req.user.id
+          } } },
+          {              //mongoose updated without true but|>
+            new : true,  //just  required for console new data
+          }  
+          )
+      
+        //  console.log(review);
+       }
+   
+     res.json({
+       sucess : true,
+       massage : "Review updated and saved . // API sucessfully",
+      
+     })
+  } catch (err) {
+    console.log(err);
+  }
  }
 
 

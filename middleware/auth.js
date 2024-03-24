@@ -17,7 +17,7 @@ const authMiddleware = (role) => async (req, res,next) => {
            // req.userId = payload.id   //myshortcut  
          
            req.user = await userModel.findById(payload.id);
-           console.log("req.user" , req.user)
+         //  console.log("req.user" , req.user)
             next();
         }
         else{

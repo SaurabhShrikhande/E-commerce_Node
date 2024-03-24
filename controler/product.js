@@ -59,17 +59,20 @@ const editProduct = (req, res) => {
 const likeDislike = async (req, res) => {   
  // console.log("req.body", req.body)
  // console.log("req.param.action", req.params.action)   //not param its params  // s imp 
- console.log("req.param.action", req.user.id)
+ // console.log("req.user.id", req.user.id)
   if (req.params.action === "like"){
+    // logic remain if alredy like then do not permit to like again   //done line no 65 //if put pull in starting in line no 68 will not work
+    const deleteprevious = await productModel.findByIdAndUpdate(req.params.productId , { $pull : { like : req.user.id} })
                                                                                 // important push insted of set   
                                                                                                       //req.body.id from other option req.user.id from auth)  
-    const UpdatedProduct  = await productModel.findByIdAndUpdate(req.params.productId , {$push : {like : req.user.id}, $pull : { dislike : req.user.id} })
+    const UpdatedProduct  = await productModel.findByIdAndUpdate(req.params.productId , {$push : {like : req.user.id}, $pull : { dislike : req.user.id} /* , $inc :(likecount : 1 ) for dec -1 , for like count like array size */ })
    //  console.log(UpdatedProduct)                               //req,params.productId endpoint  /:productId/:action
   }
 
   if (req.params.action === "dislike"){
-    // important push insted of set     
-     const UpdatedProduct  = await productModel.findByIdAndUpdate(req.params.productId , {$push : { dislike : req.user.id}, $pull : { like : req.user.id} })
+    const deleteprevious = await productModel.findByIdAndUpdate(req.params.productId , { $pull : { dislike : req.user.id} })
+    // important push insted of set                                                                 //const update =  {}
+     const UpdatedProduct  = await productModel.findByIdAndUpdate(req.params.productId , { $push : { dislike : req.user.id}, $pull : { like : req.user.id} })
         console.log(UpdatedProduct)
 }     
 
@@ -98,6 +101,34 @@ const productDetail = await productModel.findById(req.body.productId)
   })
 }
 
+ const  reviews = async (req, res) => {
+ /*
+    productId : from URL params 
+    Rating and comment : body,
+    userId : Auth
+ */
+
+   // console.log("req.params.productId , req.body , req.user.id ", req.params.productId , req.body , req.user.id )
+
+   const review = await productModel.findByIdAndUpdate(req.params.productId ,
+    { $push : { reviews : {      
+       rating : req.body.rating,
+       comment : req.body.comment,
+       userId : req.user.Id
+    } } },
+    {              //mongoose updated without true but|>
+      new : true,  //just  required for console new data
+    }  
+    )
+
+    console.log(review);
+  res.json({
+    sucess : true,
+    massage : "Review updated and saved . // API sucessfully",
+   
+  })
+ }
+
 
 module.exports = {
     createProduct,
@@ -105,6 +136,8 @@ module.exports = {
     editProduct,
 
     likeDislike,
-    productDetail
+    productDetail,
+
+    reviews
 
 };

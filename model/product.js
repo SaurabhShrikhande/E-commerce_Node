@@ -38,6 +38,16 @@ const productSchema = new mongoose.Schema({
         type : [mongoose.Schema.Types.ObjectId],
         default : [],
         ref : "users"
+    }, 
+    reviews : {
+        type : [
+            {
+                rating : Number ,
+                comment : String,
+                userId : mongoose.Schema.Types.ObjectId
+            }
+        ],
+        default : []
     }
 })
 

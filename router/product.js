@@ -13,9 +13,18 @@ router.get("/", product.getProduct);
 
 
 
-router.post("/product-detail-by-id", product.productDetail)   //populte
+
+router.post("/:productId/reviews" , authMiddleware(["admin","buyer"]), product.reviews)  //sequence matter
+
 
 router.post("/:productId/:action" , authMiddleware(["buyer"]), product.likeDislike);
+
+router.post("/product-detail-by-id", product.productDetail)   //populte
+
+
+
+
+
 
 module.exports = router;
 

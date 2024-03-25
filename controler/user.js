@@ -1,7 +1,7 @@
-
-const usermodel = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const userModel = require("../model/user");
+const { use } = require("../router/user");
 
 const userregister = async (req,res) => {
    try {
@@ -13,7 +13,7 @@ const userregister = async (req,res) => {
     //  const hash = bcrypt.hashSync( req.body.password , salt);
   // console.log(hash)
    
-      const newUser = new usermodel({
+      const newUser = new userModel({
        ...req.body,
       //   password : hash
       });
@@ -40,7 +40,7 @@ const userregister = async (req,res) => {
 
 const userlogin = async (req,res) => {
     
-const user = await usermodel.findOne({email : req.body.email})
+const user = await userModel.findOne({email : req.body.email})
 
 if (!user){
  return res.json({
@@ -88,8 +88,36 @@ const userlogout = (req,res) => {
 } 
 
 
+const addProductToWishlist = async (req, res) =>{ 
+ // console.log(req.body.productId);
+
+ await userModel.findByIdAndUpdate(req.user.id , { $push : { wishlist : req.body.productId } })
+
+  res.json({
+    sucess : true,
+    massage : "Product Added to Wishlist"
+  })
+   
+}
+
+const getProductFromWishlist = async (req , res) => {
+                           //new                  //field , projection to require limited data                   // new to get specific field or data
+ const user = await userModel.findById(req.user.id /* */ , "wishlist" /* , for multiple */ ).populate("wishlist",/* */  "title price"  /* */ )
+
+  res.json({
+    sucess : true,
+    massage : " got Product from Wishlist",
+    result : user 
+  })
+}
+
+
+
+
 module.exports = {
     userregister,
     userlogin,
-    userlogout
+    userlogout,
+    addProductToWishlist,
+    getProductFromWishlist
 }

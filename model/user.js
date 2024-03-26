@@ -28,6 +28,30 @@ const mongoose = require("mongoose");
 //         },
 //     }
 
+const addressSchema = new mongoose.Schema({
+    address : {
+        type : String,
+        required : false,
+        default : ""
+    },
+    state : {
+        type : String,
+        required : false,
+        default : ""
+    },
+    city : {
+        type : String,
+        required : false,
+        default : ""
+    },
+    pin : {
+        type : String,
+        required : false,
+        default : ""
+    },
+    
+})
+
 
 const userSchema = new mongoose.Schema({
     
@@ -57,6 +81,17 @@ const userSchema = new mongoose.Schema({
         default : [],
         ref : "products"
     },
+    // address : {
+    //     type : {
+    //          address : String,
+    //          State : String,
+    //          Pin : String
+    //     }
+    // }
+    address : {
+        type : addressSchema   //new 
+    },
+
 })
 
 userSchema.pre("save" , function () {

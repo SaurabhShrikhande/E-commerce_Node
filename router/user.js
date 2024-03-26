@@ -18,4 +18,9 @@ router.post("/logout", user.userlogout);
 router.post("/wishlist" ,  authMiddleware(["admin","buyer", "seller"]),  user.addProductToWishlist)
 router.get("/wishlist" ,  authMiddleware(["admin","buyer", "seller"]),  user.getProductFromWishlist)
 
+
+
+router.post("/adress" , authMiddleware(["admin","buyer", "seller"]), user.saveUserAddress )
+
+
 module.exports = router;

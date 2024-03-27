@@ -29,7 +29,9 @@ const cartSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         required : true,
     },
-
-
-
 })
+
+
+const cartModel = mongoose.model("cart" , cartSchema)
+
+module.exports = cartModel;

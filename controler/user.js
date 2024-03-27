@@ -112,16 +112,26 @@ const getProductFromWishlist = async (req , res) => {
 }
 
 const saveUserAddress = async (req, res) => {
-/* const adres = req.body
+ const adres = req.body
 const setobj = {}
-if(adress.address) {
-  setobj.["address.address"] = adres.address  //target , update dynamic key
-} */
+if(adres.address) {
+  setobj["address.address"] = adres.address  //target , update dynamic key //syntax js normal update obj . or [ ]
+}
+if(adres.city) {
+  setobj["address.city"] = adres.city  
+} 
+if(adres.state) {
+  setobj["address.state"] = adres.state  
+} 
+if(adres.pincode) {
+  setobj["address.pincode"] = adres.pincode 
+} 
 
- const update =  { $set : { address : req.body } }   //new ,schema also
-console.log(update);
- const update2 =  await userModel.findByIdAndUpdate(req.user.id , { $set : { address : req.body  /* "address.adress" : req.body.address (for prevent other data in DB)*/ } /* //setobj */ })
- console.log(update2); 
+// const update =  { $set : { address : req.body } }   //new ,schema also
+// console.log(update);
+// const update2 =  await userModel.findByIdAndUpdate(req.user.id , { $set : { address : req.body  /* "address.adress" : req.body.address (for prevent other data in DB)*/ } /* //setobj */ })
+ const update2 =  await userModel.findByIdAndUpdate(req.user.id , { $set : setobj })
+ // console.log(update2); 
 
 res.json({
     sucess : true,

@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const userRouter = require("./router/user.js");
 const productRoutes = require("./router/product.js")
 const cartRoutes = require("./router/cart.js")
+const couponRoutes = require("./router/coupon.js")
+const orderRoutes = require("./router/order.js")
                    //mongodb://localhost:27017   
 mongoose.connect("mongodb://127.0.0.1:27017/ecom")
 .then(() => { console.log("db connected")})
@@ -17,9 +19,11 @@ app.use("/api/v1/user", userRouter);
 
 app.use("/api/v1/product" , productRoutes);
 
-app.use("/api/v1/cart", cartRoutes)
+app.use("/api/v1/cart", cartRoutes);
 
 
+app.use("/api/v1/coupon" , couponRoutes);
+app.use("/api/v1/order" , orderRoutes)
 
 app.get("/test" ,(req,res) => {
     

@@ -64,11 +64,11 @@ const orderSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         required : true,
     },
-    amout : {
+    amount : {
         type : Number,
         require : true
     },
-    coupen : {
+    coupon : {
         type : mongoose.Schema.Types.ObjectId,  // np array bcz usser must apply one coupon
         require : false,
         default : null,

@@ -6,7 +6,8 @@ const cartRoutes = require("./router/cart.js")
 const couponRoutes = require("./router/coupon.js")
 const orderRoutes = require("./router/order.js")
                    //mongodb://localhost:27017   
-mongoose.connect("mongodb://127.0.0.1:27017/ecom")
+// mongoose.connect("mongodb://127.0.0.1:27017/ecom")
+mongoose.connect("mongodb+srv://saurabh:tjvGuXZT0yI9CnIN@cluster0.t2ejvfz.mongodb.net/")
 .then(() => { console.log("db connected")})
 .catch((err)=> { console.log(err.message)} );
 
